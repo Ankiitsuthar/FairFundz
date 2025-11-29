@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useAuth } from "../auth/AuthProvider";
+import { API_BASE } from "../config";
 
 export default function WorkerRegistrationForm() {
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ async function onSubmit(e) {
 
   try {
     // Step 1: Check if worker already exists
-    const checkRes = await fetch("http://localhost:5000/check-user", {
+    const checkRes = await fetch(`${API_BASE}/check-user`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -69,7 +70,7 @@ async function onSubmit(e) {
     }
 
     // Step 2: Register worker
-    const res = await fetch("http://localhost:5000/api/worker/register", {
+    const res = await fetch(`${API_BASE}/api/worker/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

@@ -17,6 +17,7 @@ import {
   Grid,
   Alert,
 } from "@mui/material";
+import { API_BASE } from "../config";
 
 export default function CompanyRegistrationForm() {
   const navigate = useNavigate();
@@ -45,7 +46,7 @@ export default function CompanyRegistrationForm() {
     }
     setLoading(true);
     // Step 1: Check if company already exists
-  const checkRes = await fetch("http://localhost:5000/check-user", {
+  const checkRes = await fetch(`${API_BASE}/check-user`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -62,7 +63,7 @@ export default function CompanyRegistrationForm() {
   }
 
   // Step 2: Proceed with registration
-  const res = await fetch("http://localhost:5000/api/company/register", {
+    const res = await fetch(`${API_BASE}/api/company/register`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(form),

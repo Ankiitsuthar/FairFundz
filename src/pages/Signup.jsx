@@ -13,6 +13,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import axios from "axios";
+import { API_BASE } from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
@@ -37,7 +38,7 @@ export default function Signup() {
     setError(null);
     setLoading(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post(`${API_BASE}/api/auth/register`, {
         email: form.email,
         password: form.password,
         role: form.role,
@@ -215,7 +216,7 @@ export default function Signup() {
 //     const delay = setTimeout(async () => {
 //       try {
 //         const res = await axios.post(
-//           "http://localhost:5000/api/auth/check-email",
+//           `${API_BASE}/api/auth/check-email`,
 //           { email: data.email }
 //         );
 
@@ -263,7 +264,7 @@ export default function Signup() {
 //     }
 
 //     try {
-//       await axios.post("http://localhost:5000/api/auth/register", {
+//       await axios.post(`${API_BASE}/api/auth/register`, {
 //         name: data.name,
 //         email: data.email,
 //         password: data.password,
@@ -272,7 +273,7 @@ export default function Signup() {
 
 //      setSuccess("Account created! Redirecting...");
 //     // setTimeout(() => {
-//     //   window.location.href = http://localhost:5173/verify-email?email=${encodeURIComponent(data.email)};
+//     //   window.location.href = `${window.location.origin}/verify-email?email=${encodeURIComponent(data.email)}`;
 //     // }, 1500);
 
 //       // setTimeout(() => (window.location.href = "/login"), 1500);

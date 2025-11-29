@@ -9,6 +9,7 @@ import {
   TextField,
 } from "@mui/material";
 import axios from "axios";
+import { API_BASE } from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthProvider";
 
@@ -32,7 +33,7 @@ export default function Login() {
   setLoading(true);
 
   try {
-    const res = await axios.post("http://localhost:5000/api/auth/login", {
+    const res = await axios.post(`${API_BASE}/api/auth/login`, {
       email: form.email,
       password: form.password,
     });

@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import axios from "axios"
+import { API_BASE } from "../config"
 
 export default function Payments() {
   const [amount, setAmount] = useState("")
@@ -20,7 +21,7 @@ export default function Payments() {
     const token = localStorage.getItem("token");
 
     const res = await axios.post(
-      "http://localhost:5000/api/payments",
+      `${API_BASE}/api/payments`,
       { workerEmail: to, amount },
       {
         headers: {
