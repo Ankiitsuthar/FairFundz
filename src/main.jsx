@@ -5,13 +5,16 @@ import App from "./App.jsx"
 import "./index.css"
 import { ThemeProvider, CssBaseline } from "@mui/material"
 import theme from "./theme.js"
+import { AuthProvider } from "./auth/AuthProvider";
 
 createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <BrowserRouter>
-        <App />
+        <AuthProvider>
+          <App />
+        </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>,

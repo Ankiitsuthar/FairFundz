@@ -1,5 +1,6 @@
-import { Link, NavLink } from "react-router-dom"
-import { Container } from "@mui/material"
+import { Link, NavLink, useNavigate } from "react-router-dom"
+import { Container, Button } from "@mui/material"
+import { useAuth } from "../auth/AuthProvider"
 
 const linkStyle = ({ isActive }) => ({
   fontWeight: isActive ? 700 : 500,
@@ -7,6 +8,8 @@ const linkStyle = ({ isActive }) => ({
 })
 
 export default function SiteHeader() {
+  const auth = useAuth();
+  const navigate = useNavigate();
   return (
     <nav className="nav" aria-label="Primary">
       <Container className="!px-0">
@@ -42,6 +45,15 @@ export default function SiteHeader() {
             <NavLink to="/contact" style={linkStyle}>
               Contact
             </NavLink>
+          </div>
+          <div>
+            {auth?.isAuthenticated ? (
+              <Button size="small" variant="outlined" onClick={() => auth.logout()}>
+                Logout
+              </Button>
+            ) : (
+              <Button size="small" variant="contained" onClick={() => navigate("/login")}>Login</Button>
+            )}
           </div>
         </div>
       </Container>

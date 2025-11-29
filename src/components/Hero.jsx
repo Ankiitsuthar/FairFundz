@@ -32,19 +32,21 @@
 
 import { Container, Stack, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function Hero() {
   const navigate = useNavigate();
 
-  function handleRegister(type) {
-    const token = localStorage.getItem("token");
+  const auth = useAuth();
 
-    if (!token) {
-      navigate("/signup");  // or "/login" if you prefer
-    } else {
-      if (type === "worker") navigate("/worker-register");
-      if (type === "company") navigate("/company-register");
+  function handleRegister(type) {
+    if (!auth?.isAuthenticated) {
+      navigate("/login");
+      return;
     }
+
+    if (type === "worker") navigate("/worker-register");
+    if (type === "company") navigate("/company-register");
   }
 
   return (

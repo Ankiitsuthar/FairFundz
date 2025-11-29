@@ -4,6 +4,7 @@ import SiteFooter from "./components/SiteFooter.jsx"
 
 import LoginPage from "./pages/Login.jsx";
 import SignupPage from "./pages/Signup.jsx";
+import { RequireAuth } from "./auth/AuthProvider";
 import Home from "./pages/Home.jsx"
 import WorkerRegister from "./pages/WorkerRegister.jsx"
 import WorkerDashboard from "./pages/WorkerDashboard.jsx"
@@ -26,18 +27,21 @@ export default function App() {
 
       <main className="container" style={{ paddingTop: "1rem", paddingBottom: "2rem" }}>
         <Routes>
+          {/* Public routes */}
           <Route path="/" element={<Home />} />
-          <Route path="/worker-register" element={<WorkerRegister />} />
-          <Route path="/worker-dashboard" element={<WorkerDashboard />} />
-          <Route path="/company-register" element={<CompanyRegister />} />
-          <Route path="/company-dashboard" element={<CompanyDashboard />} />
-          <Route path="/contractor-dashboard" element={<ContractorDashboard />} />
-          <Route path="/payments" element={<Payments />} />
-          <Route path="/compliance" element={<Compliance />} />
-          <Route path="/about-us" element={<AboutUs />} />
-          <Route path="/contact" element={<Contact />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+
+          {/* Protected routes - require authentication */}
+          <Route path="/worker-register" element={<RequireAuth><WorkerRegister /></RequireAuth>} />
+          <Route path="/worker-dashboard" element={<RequireAuth><WorkerDashboard /></RequireAuth>} />
+          <Route path="/company-register" element={<RequireAuth><CompanyRegister /></RequireAuth>} />
+          <Route path="/company-dashboard" element={<RequireAuth><CompanyDashboard /></RequireAuth>} />
+          <Route path="/contractor-dashboard" element={<RequireAuth><ContractorDashboard /></RequireAuth>} />
+          <Route path="/payments" element={<RequireAuth><Payments /></RequireAuth>} />
+          <Route path="/compliance" element={<RequireAuth><Compliance /></RequireAuth>} />
+          <Route path="/about-us" element={<RequireAuth><AboutUs /></RequireAuth>} />
+          <Route path="/contact" element={<RequireAuth><Contact /></RequireAuth>} />
 
         </Routes>
       </main>

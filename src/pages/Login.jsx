@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export default function Login() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const auth = useAuth();
 
   function update(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -36,6 +38,8 @@ export default function Login() {
     });
 
     localStorage.setItem("token", res.data.token);
+    // notify auth context
+    try { auth.login(res.data.token); } catch (e) { /* ignore if provider missing */ }
 
     // Extract role from returned user
     const role = res.data.user.role;

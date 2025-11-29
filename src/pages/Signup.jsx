@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const auth = useAuth();
 
   function update(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -43,6 +45,8 @@ export default function Signup() {
       });
 
       localStorage.setItem("token", res.data.token);
+      // notify auth context
+      try { auth.login(res.data.token); } catch (e) { /* ignore if provider missing */ }
       // Role based redirect
     if (form.role === "worker") {
       navigate("/worker-register");

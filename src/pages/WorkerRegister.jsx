@@ -14,6 +14,7 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
+import { useAuth } from "../auth/AuthProvider";
 
 export default function WorkerRegistrationForm() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function WorkerRegistrationForm() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const auth = useAuth();
 
   function update(key, value) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -72,8 +74,11 @@ async function onSubmit(e) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),
     });
-    localStorage.setItem("token", res.data.token);
     const data = await res.json();
+    if (data?.token) {
+      localStorage.setItem("token", data.token);
+      try { auth.login(data.token); } catch (e) { }
+    }
     console.log("Register response:", data);
 
     if (!res.ok) {
