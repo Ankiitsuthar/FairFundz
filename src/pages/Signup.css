@@ -1,0 +1,150 @@
+.auth-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eef4ff;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 68, 255, 0.08);
+
+  margin: 120px auto;  /* REMOVE OLD MARGINS */
+  animation: fadeIn 0.4s ease;
+}
+
+.auth-container h2 {
+  color: #0f275f;
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+.auth-container p {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+
+.password-wrapper {
+  position: relative;
+}
+
+.pass-icon {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+
+/* Inputs */
+.auth-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin: 8px 0 16px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 68, 255, 0.2);
+  background: #fdfdfd;
+  font-size: 15px;
+  color: #222;
+  transition: 0.2s;
+}
+
+.auth-input:focus {
+  border-color: #0f4c81;
+  box-shadow: 0px 0px 6px rgba(0, 68, 255, 0.2);
+  outline: none;
+}
+
+/* Buttons */
+.auth-btn {
+  width: 100%;
+  padding: 12px;
+  background: #0f4c81;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: 0.2s ease-in-out;
+}
+
+.auth-btn:hover {
+  background: #136bc6;
+}
+
+/* Links */
+.auth-link {
+  margin-top: 10px;
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  color: #0f4c81;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* Top Role Selector */
+.role-top-selector {
+  display: flex;
+  background: #eef4ff;
+  padding: 6px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  gap: 6px;
+}
+
+.role-btn {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f4c81;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.role-btn.active {
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 68, 255, 0.15);
+  border: 1px solid rgba(0, 68, 255, 0.25);
+}
+
+/* Success & Error Messages */
+.error-box,
+.success-box {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  animation: fadeIn 0.3s ease;
+}
+
+.error-box {
+  background: #fee2e2;
+  color: #991b1b;
+  border-left: 4px solid #ef4444;
+}
+
+.success-box {
+  background: #d1fae5;
+  color: #065f46;
+  border-left: 4px solid #10b981;
+}

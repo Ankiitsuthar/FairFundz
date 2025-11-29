@@ -2,6 +2,8 @@ import { Routes, Route } from "react-router-dom"
 import SiteHeader from "./components/SiteHeader.jsx"
 import SiteFooter from "./components/SiteFooter.jsx"
 
+import LoginPage from "./pages/Login.jsx";
+import SignupPage from "./pages/Signup.jsx";
 import Home from "./pages/Home.jsx"
 import WorkerRegister from "./pages/WorkerRegister.jsx"
 import WorkerDashboard from "./pages/WorkerDashboard.jsx"
@@ -34,6 +36,9 @@ export default function App() {
           <Route path="/compliance" element={<Compliance />} />
           <Route path="/about-us" element={<AboutUs />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
+
         </Routes>
       </main>
 

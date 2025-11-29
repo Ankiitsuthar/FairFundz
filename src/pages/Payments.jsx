@@ -1,15 +1,44 @@
 "use client"
 
 import { useState } from "react"
+import axios from "axios"
 
 export default function Payments() {
   const [amount, setAmount] = useState("")
   const [to, setTo] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
+  const [success, setSuccess] = useState("")
 
-  function submit(e) {
-    e.preventDefault()
-    alert(`Pretend payment queued:\nTo: ${to}\nAmount: ₹${amount}`)
+  async function submit(e) {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+  setSuccess("");
+
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await axios.post(
+      "http://localhost:5000/api/payments",
+      { workerEmail: to, amount },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (res.data.success) {
+      setSuccess(`✔ Payout created successfully. Payment ID: ${res.data.paymentId}`);
+    }
+  } catch (err) {
+    setError(err.response?.data?.message || "Server error");
+  } finally {
+    setLoading(false);
   }
+}
+
 
   return (
     <section className="section">
@@ -18,9 +47,17 @@ export default function Payments() {
 
       <form onSubmit={submit} className="grid" style={{ maxWidth: 520 }}>
         <label className="label" htmlFor="to">
-          To (worker ID or email)
+          Worker Email
         </label>
-        <input id="to" name="to" className="input" value={to} onChange={(e) => setTo(e.target.value)} required />
+
+        <input
+          id="to"
+          name="to"
+          className="input"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          required
+        />
 
         <label className="label" htmlFor="amount">
           Amount (₹)
@@ -28,6 +65,7 @@ export default function Payments() {
         <input
           id="amount"
           name="amount"
+          type="number"
           className="input"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
@@ -35,11 +73,14 @@ export default function Payments() {
         />
 
         <div>
-          <button className="btn btn-primary" type="submit">
-            Send payout
+          <button className="btn btn-primary" type="submit" disabled={loading}>
+            {loading ? "Sending..." : "Send payout"}
           </button>
         </div>
       </form>
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
 
       <div className="section">
         <h3 style={{ margin: 0, fontSize: "1.1rem" }}>Recent</h3>

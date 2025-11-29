@@ -62,7 +62,7 @@ export default function CompanyRegistrationForm() {
   }
 
   // Step 2: Proceed with registration
-  const res = await fetch("http://localhost:5000/company-register", {
+  const res = await fetch("http://localhost:5000/api/company/register", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(form),
@@ -71,7 +71,7 @@ export default function CompanyRegistrationForm() {
 
   setLoading(false);
   if (res.ok) {
-    navigate("/company-dashboard");
+    navigate("/api/company-dashboard/dashboard");
   } else {
     setError(data.error || "Registration failed.");
   }

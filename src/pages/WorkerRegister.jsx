@@ -1,6 +1,6 @@
 // WorkerRegistrationForm.js
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -19,7 +19,7 @@ export default function WorkerRegistrationForm() {
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
-    mobile: "",
+    email: "",
     aadhaar: "",
     accountNumber: "",
     ifsc: "",
@@ -35,50 +35,60 @@ export default function WorkerRegistrationForm() {
     setForm((f) => ({ ...f, [key]: value }));
   }
 
-  async function onSubmit(e) {
-    e.preventDefault();
-    setError(null);
-    if (!form.name || !form.mobile || !form.aadhaar || !form.accountNumber || !form.ifsc) {
-      setError("Please fill all required fields.");
-      return;
-    }
-    setLoading(true);
-    // Step 1: Check if worker already exists
-  const checkRes = await fetch("http://localhost:5000/check-user", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      email: form.email,    // if you replace mobile with email
-      aadhaar: form.aadhaar,
-    }),
-  });
-  const checkData = await checkRes.json();
+async function onSubmit(e) {
+  e.preventDefault();
+  setError(null);
 
-  if (checkData.exists) {
-    setLoading(false);
-    setError(`User already registered as ${checkData.type}`);
+  if (!form.name || !form.email || !form.aadhaar || !form.accountNumber || !form.ifsc) {
+    setError("Please fill all required fields.");
     return;
   }
 
-  // Step 2: Proceed with registration
-  const res = await fetch("http://localhost:5000/worker-register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(form),
-  });
-  const data = await res.json();
+  setLoading(true);
+
+  try {
+    // Step 1: Check if worker already exists
+    const checkRes = await fetch("http://localhost:5000/check-user", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: form.email,
+        name: form.name,
+      }),
+    });
+
+    const checkData = await checkRes.json();
+    console.log("Check Result:", checkData);
+
+    if (checkData.exists) {
+      setError(`User already registered as ${checkData.type}`);
+      setLoading(false);
+      return;
+    }
+
+    // Step 2: Register worker
+    const res = await fetch("http://localhost:5000/api/worker/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+    localStorage.setItem("token", res.data.token);
+    const data = await res.json();
+    console.log("Register response:", data);
+
+    if (!res.ok) {
+      setError(data.error || "Registration failed");
+    } else {
+      navigate("/worker-dashboard");
+    }
+  } catch (err) {
+    console.error(err);
+    setError("Server error: Unable to register");
+  }
 
   setLoading(false);
-  
-  if (res.ok) {
-    navigate("/worker-dashboard");
-  } else {
-    setError(data.error || "Registration failed.");
-  }
-    // await new Promise((r) => setTimeout(r, 700));
-    // setLoading(false);
-    // navigate("/worker-dashboard");
-  }
+}
+
 
   return (
     <Card sx={{ maxWidth: 600, margin: "auto", mt: 4, p: 2 }}>
@@ -103,10 +113,10 @@ export default function WorkerRegistrationForm() {
           />
 
           <TextField
-            label="Mobile Number"
-            type="tel"
-            value={form.mobile}
-            onChange={(e) => update("mobile", e.target.value)}
+            label="E-mail "
+            type="email"
+            value={form.email}
+            onChange={(e) => update("email", e.target.value)}
             required
             fullWidth
           />
@@ -185,7 +195,14 @@ export default function WorkerRegistrationForm() {
             </FormControl>
           </div>
 
-          <CardActions sx={{ justifyContent: "flex-end" }}>
+          <CardActions sx={{ justifyContent: "space-between", mt: 2 }}>
+            <Typography variant="body2">
+              Already have an account?{" "}
+              <Link to="/worker-login" style={{ color: "#1976d2", textDecoration: "none" }}>
+                Login
+              </Link>
+            </Typography>
+
             <Button
               type="submit"
               variant="contained"
